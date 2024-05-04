@@ -1,61 +1,56 @@
 <!DOCTYPE html>
 <html>
-    <head>
-            <title>Todo List</title>
-    </head>
 
-    <style>
-        .completed {
-            text-decoration: line-through; /* Add strikethrough style */
-        }
-    </style>    
+<head>
+    <title>Todo List</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
 
-    <script>
-            function toggleCompleted(elementId) {
-                var taskElement = document.getElementById(elementId);
-                taskElement.classList.toggle("completed");
-            }
-    </script>
+<script>
+    function toggleCompleted(elementId) {
+        var taskElement = document.getElementById(elementId);
+        taskElement.classList.toggle("completed");
+    }
+</script>
 
-    <body>
-        <div class="todo-panel">
-            <h1>Todo List</h1>
-            <form method="post">
-                    <input type="text" name="task" placeholder="Enter task" required>
-                    <button type="submit">Add Task</button>                
-            </form>
-        </div>
-    
-        <center>
+<body>
+    <div class="todo-panel">
+        <h1>Todo List</h1>
+        <form method="post">
+            <input type="text" name="task" placeholder="Enter task" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
 
-            <ul>
-                {% for task in tasks %}
+    <center>
 
-                <li class="list">
+        <ul>
+            {% for task in tasks %}
 
-                    <form id="editModule" class="edit-module" action="{{ url_for('edit_task') }}" method="post" style="display: inline;">
-                        <input type="hidden" name="old_task" value="{{ task }}">
-                        <input id="task{{ loop.index }}" type="text" name="new_task" value="{{ task }}">
-                        <button type="submit">✏️</button>
-                    </form>
+            <li class="list">
 
-                    <form class="edit-module" action="{{ url_for('delete_task') }}" method="post" style="display: inline;">
-                        <input type="hidden" name="task" value="{{ task }}">
-                        <button type="submit">❌</button>
-                    </form>
+                <form id="editModule" class="edit-module" action="{{ url_for('edit_task') }}" method="post"
+                    style="display: inline;">
+                    <input type="hidden" name="old_task" value="{{ task }}">
+                    <input id="task{{ loop.index }}" type="text" name="new_task" value="{{ task }}">
+                    <button type="submit">✏️</button>
+                </form>
 
-                    <button class="button" onclick="toggleCompleted('task{{ loop.index }}')">✅</button>
+                <form class="edit-module" action="{{ url_for('delete_task') }}" method="post" style="display: inline;">
+                    <input type="hidden" name="task" value="{{ task }}">
+                    <button type="submit">❌</button>
+                </form>
 
-                </li>
+                <button class="button" onclick="toggleCompleted('task{{ loop.index }}')">✅</button>
 
-                {% endfor %}
+            </li>
 
-            </ul>
+            {% endfor %}
 
-        </center>
-        
-    </body>
+        </ul>
+
+    </center>
+
+</body>
 
 </html>
-
-
