@@ -115,6 +115,10 @@ body {
   list-style: none; 
 }
 
-.completed {
-  text-decoration: line-through;
+.done {
+   text-decoration: line-through; /* Add strikethrough style */
+}
+
+.ongoing {
+  text-decoration: none;
 }
