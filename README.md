@@ -38,6 +38,20 @@ git clone https://github.com/your_username/your_repository.git
 ```
 pip install -r requirements.txt
 ```
+
+## Usage
+
+1. Run the Flask application:
+```
+python main.py
+```
+2. Open your web browser and go to `http://localhost:5000`.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+
 ## Contributors:
 - [Saeed Forati K.](https://github.com/foratik)
 - [Amirhossein Souri](https://github.com/Amir14Souri)
