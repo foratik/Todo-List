@@ -45,7 +45,7 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
-2. Open your web browser and go to `http://localhost:5000`.
+1. Open your web browser and go to [http://localhost:5000](http://localhost:5000).
 
 ## Contributing
 
