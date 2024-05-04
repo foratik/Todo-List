@@ -112,9 +112,9 @@ body {
 }
 
 .list {
-  list-style: none; /* Remove bullet points */
+  list-style: none; 
 }
 
 .completed {
-  text-decoration: line-through; /* Add strikethrough style */
+  text-decoration: line-through;
 }
