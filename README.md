@@ -28,7 +28,16 @@ A simple Todo List web application built with Flask, HTML, and CSS.
     <img height="200px" width="auto" src ="Preview/Do_Task.gif">
     </p>
 
+## Installation
 
+1. Clone the repository:
+```
+git clone https://github.com/your_username/your_repository.git
+```
+2. Install dependencies:
+```
+pip install -r requirements.txt
+```
 ## Contributors:
 - [Saeed Forati K.](https://github.com/foratik)
 - [Amirhossein Souri](https://github.com/Amir14Souri)
