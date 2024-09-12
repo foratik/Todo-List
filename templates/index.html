@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Todo List</title>
-        <link rel="stylesheet" href="../static/style.css" />
-    </head>
+<head>
+    <title>Todo List</title>
+    <link rel="stylesheet" href="../static/style.css"/>
+</head>
 
-    <body>
-        <div class="todo-panel">
-            <h1>Todo List</h1>
-            <form method="post">
-                <input type="text" name="task" placeholder="Enter task" required />
-                <button type="submit">Add Task</button>
-            </form>
-        </div>
+<body>
+<div class="todo-panel">
+    <h1>Todo List</h1>
+    <form method="post">
+        <input type="text" name="task" placeholder="Enter task" required/>
+        <button type="submit">Add Task</button>
+    </form>
+</div>
 
-        <center>
-            <ul>
-                {% for task in tasks %}
+<center>
+    <ul>
+        {% for task in tasks %}
 
-                <li class="listt">
-                    <form
+            <li class="list">
+                <form
                         id="editModule"
                         class="edit-module"
                         action="{{ url_for('edit_task') }}"
                         method="post"
                         style="display: inline">
-                        <input type="hidden" name="old_task" value="{{ task[0] }}" />
-                        <input
+                    <input type="hidden" name="task_id" value="{{ task.id }}"/>
+                    <input
                             id="task{{ loop.index }}"
                             type="text"
                             name="new_task"
-                            value="{{ task[0] }}"
-                            class="{{ task[1] }}" />
-                        <button type="submit">✏️</button>
-                    </form>
-                    <form
+                            value="{{ task.name }}"
+                            class="{{ task.status }}"/>
+                    <button type="submit">✏️</button>
+                </form>
+
+                <form
                         class="edit-module"
                         action="{{ url_for('delete_task') }}"
                         method="post"
                         style="display: inline">
-                        <input type="hidden" name="task" value="{{ task[0] }}" />
-                        <button type="submit">❌</button>
-                    </form>
-                    <form
+                    <input type="hidden" name="task_id" value="{{ task.id }}"/>
+                    <button type="submit">❌</button>
+                </form>
+
+                <form
                         class="edit-module"
                         action="{{ url_for('do_task') }}"
                         method="post"
                         style="display: inline">
-                        <input type="hidden" name="my_task" value="{{ task[0] }}" />
-                        <button type="submit">✅</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-        </center>
-    </body>
+                    <input type="hidden" name="task_id" value="{{ task.id }}"/>
+                    <button type="submit">✅</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</center>
+</body>
 </html>

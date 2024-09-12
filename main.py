@@ -1,62 +1,61 @@
-import json
 from flask import Flask, render_template, request, redirect, url_for
-
-def update_history(tasks):
-    history = open('history.txt', 'w')
-    history.write(json.dumps(tasks))
-    history.close()
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-history = open('history.txt', 'r')
-content = history.read()
-if content != '':
-    tasks = json.loads(content)
-else:
-    tasks = []
-history.close()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'secret_key'
+db = SQLAlchemy(app)
+
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='ongoing')
+
+    def toggle_status(self):
+        if self.status == "ongoing":
+            self.status = "done"
+        else:
+            self.status = "ongoing"
+
+    def __repr__(self):
+        return f'<Task {self.name}>'
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        task = request.form['task']
-        tasks.append([task, 'ongoing'])
-        update_history(tasks)
+        new_task = Task(name=request.form['task'])
+        db.session.add(new_task)
+        db.session.commit()
         return redirect(url_for('index'))
-    return render_template('index.html', tasks=tasks)
+    else:
+        tasks = Task.query.all()
+        return render_template('index.html', tasks=tasks)
 
 
 @app.route('/delete', methods=['POST'])
 def delete_task():
-    task_to_delete = request.form['task']
-    for task in tasks:
-        if task[0] == task_to_delete:
-            tasks.remove(task)
-    update_history(tasks)
+    task_to_delete = Task.query.get(request.form['task_id'])
+    db.session.delete(task_to_delete)
+    db.session.commit()
     return redirect(url_for('index'))
 
 
 @app.route('/edit', methods=['POST'])
 def edit_task():
-    old_task = request.form['old_task']
-    new_task = request.form['new_task']
-    for k in range(len(tasks)):
-        if tasks[k][0] == old_task:
-            tasks[k] = [new_task, 'ongoing']
-            break
-    update_history(tasks)
+    task = Task.query.get(request.form['task_id'])
+    task.name = request.form['new_task']
+    db.session.commit()
     return redirect(url_for('index'))
 
 
 @app.route('/done', methods=['POST'])
 def do_task():
-    task_to_be_done = request.form['my_task']
-    for task in tasks:
-        if task[0] == task_to_be_done:
-            if task[1] == 'ongoing':
-                task[1] = 'done'
-            else:
-                task[1] = 'ongoing'
-    update_history(tasks)
+    task = Task.query.filter_by(id=request.form['task_id']).first()
+    task.toggle_status()
+    db.session.commit()
     return redirect(url_for('index'))
 
 
