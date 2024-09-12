@@ -1,26 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from models import db, Task
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'secret_key'
-db = SQLAlchemy(app)
-
-
-class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    status = db.Column(db.String(20), nullable=False, default='ongoing')
-
-    def toggle_status(self):
-        if self.status == "ongoing":
-            self.status = "done"
-        else:
-            self.status = "ongoing"
-
-    def __repr__(self):
-        return f'<Task {self.name}>'
+db.init_app(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -60,4 +43,6 @@ def do_task():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()
+    app.run(debug=False, port=5000)
